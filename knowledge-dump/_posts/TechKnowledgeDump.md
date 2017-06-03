@@ -6,8 +6,8 @@
 
 ### KeyStore vs TrustStore
 
- * **keystore**, in which you have the private key and cert you prove your own identity with
- * **truststore**, which determines who you trust
+* **keystore**, in which you have the private key and cert you prove your own identity with
+* **truststore**, which determines who you trust
 
 your own identity also has a 'chain' of trust to the root - which is separate from any chain to a root you need to figure out 'who' you trust.
 
@@ -55,17 +55,17 @@ SSLPoke is a Java class file which need to be downloaded
 **Both**:
 
 * single point of access and control
- - firewall(whitelist, blacklist)
- - hide identity
- - request header edit/rewrite
+  - firewall(whitelist, blacklist)
+  - hide identity
+  - request header edit/rewrite
 * cache (static content)
 
 **Forward proxy**
 
 * monitoring and filtering
- - content-control
- - bypassing filters and censorship
- - logging and eavesdropping
+  - content-control
+  - bypassing filters and censorship
+  - logging and eavesdropping
 * translation
 * accessing services anonymously (e.g. TOR or FreeNet)
 

@@ -125,8 +125,8 @@ $$ = r_f + \beta_a * (r_m - r_f) $$
 #### CAPM assumptions
 
 * Return on stock has two components
- * Systematic (the market, usually mean S&P 500 in this class)
- * Residual ($$\alpha_a$$): expected value = 0, or is random
+	- Systematic (the market, usually mean S&P 500 in this class)
+	- Residual ($$\alpha_a$$): expected value = 0, or is random
 
 $$
 r_a = \beta_a r_m + \alpha_a

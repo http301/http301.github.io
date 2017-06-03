@@ -11,7 +11,7 @@ tags:
 
 ### Question1 - Two Diff : unsorted input
 
-Two difference, find all pairs(number of indexes pairs) values difference ($|A[i] - A[j]|$) to a target, where target > 0, with/without duplicates?
+Two difference, find all pairs(number of indexes pairs) values difference (abs(A[i] - A[j])) to a target, where target > 0, with/without duplicates?
 what if the array is unsorted?
 
 > The same as two sum, use a HashSet to store the visited value, converted to a problem of searching an exact value
@@ -21,6 +21,7 @@ what if the array is unsorted?
 3. `so A[j] =  (A[i] - target || A[i] + target)`
 
 `Time: O(n), Space: O(n)`
+
 ``` java
 public int twoDiff_Unsorted(int[] A, int target) {
 	int cnt = 0;
@@ -46,6 +47,7 @@ What if the array is sorted?
 4. Go through the input list and stops when j reach the end.
 
 `Time: O(n), Space: O(1)`
+
 ```java
 public int twoDiff_Sorted(int[] A, int target) {
 	int cnt = 0;
@@ -70,21 +72,25 @@ public int twoDiff_Sorted(int[] A, int target) {
 Given an int array, find if(all) there are 4 elements in the array such that A + B + C = D. (all positive numbers) Sorted Array.
 
 `D is the largest one → three sum`
+
 We fix D, and we converted it to a 3-Sum problem (`A + B + C = constant?`). We try all the possible D from the 4th element to the end element.
 
 `Time: O(n^3), Space: O(1)`
 
 > When we have multiple variables,  we can try to fix some variables, so that we can convert it to a problem we know how to solve.
 
-
 ### Variant - Find all A + B = C + D
 
 Given an int array, find if (all) there are 4 elements in the array such that A + B = C + D.
+
 Sorted array
+
 > We fix A and B, so that it is converted to a two sum problem, `C + D = target ?`.
 
 {1, 2, 3, 4}
+
 A     C     D     B
+
 For a sorted array, `A, B must be the largest and smallest, C, D are in the middle`, so that we can find a two sum equals to A + B.
 
 `Time: O(n^3), Space: O(1)`
@@ -108,6 +114,7 @@ Let's say C < D and A < B,  naively there are 6 cases:
 6. C < A < D < B
 
 Cases 3 ~ 6 can be easily proved that either A + B > C + D or A + B < C + D by the monotonicity of addition (E.g. A < C && B < D --> A + B < C + D).
+
 Cases 1 ~ 2 are the same, we just logically split it to two cases, they are actually the same one relationship of four random numbers, we just choose this way (A < C < D < B) to traverse the array.
 
 ---
@@ -125,13 +132,19 @@ Given two sorted array A and B, if there exist two numbers a from A and b from B
 >	 Suppose A[i] < B[j] --> do a two diff on B[j] - A[i]
 
 Two pointers walk through two array, two times, two cases.
-`E.g.  A[]: 1 3 4 5 9 11, B[]: 2 3 4 6 7 8 10`
-	1  2  3  3  4  4  5  6  7  8  9  10  11
-	A  B A  B  A  B  A  B  B  B  A  B    A
-	i
-	&nbsp;&nbsp;&nbsp;&nbsp;j
+
+E.g.  A[]: 1 3 4 5 9 11, B[]: 2 3 4 6 7 8 10
+
+1  2  3  3  4  4  5  6  7  8  9  10  11
+
+A  B  A  B  A  B  A  B  B  B  A  B    A
+
+i
+
+&nbsp;&nbsp;&nbsp;&nbsp;j
 
 `Time: O(m + n), Space: O(1)`
+
 ```java
 	public boolean diff2(int[] A, int[] B, int target) {
 		int ia = 0, ib = 0;
@@ -172,6 +185,7 @@ Basically the same as two diff.
 2. Each time we advance the pointer that has the smallest value, update the global Minimum at the same time.
 
 `Time: O(n), Space: O(1)`
+
 ```java
 public int minDiff3(int[] A, int[] B, int[] C) {
 	int min = Integer.MAX_VALUE;
@@ -199,7 +213,8 @@ public int minDiff3(int[] A, int[] B, int[] C) {
 Given an integer array with all positive integer values.
 Can we pick three elements in the array as the lengths of edges, to construct any triangle?
 
-*Triangle - three edges a, b, c, must apply:  *
+*Triangle - three edges* a, b, c, must apply:
+
 *a + b > c && b + c > a && c + a > b*
 
 > *What if a, b, c is sorted? → a <= b <= c,  a + b > c*
@@ -222,7 +237,8 @@ public boolean canConstructTriangle(int[] A) {
 ### Follow-up: How many triangles can we get from the array?
 
 > Convert it → How many pairs(a, b) of values in an integer array such that a + b > target?
-> `Two sum problem`
+
+`Two sum problem`
 
 0. Sort the input array
 1. For a + b > c, we first fix c, try different c form A[2] to A[n - 1]
@@ -233,6 +249,7 @@ public boolean canConstructTriangle(int[] A) {
 	6. A[l] + A[r] <= A[i], invalid, advance l to increase the sum
 
 `Time: O(n * n), Space: O(1)`
+
 ```java
 public int countTriangle(int[] A) {
 	Arrays.sort(A);
@@ -249,6 +266,7 @@ public int countTriangle(int[] A) {
 	return count;
 }
 ```
+
 ---
 
 ## Arrays - Precomputation sums
@@ -256,7 +274,9 @@ public int countTriangle(int[] A) {
 ### Question1 - Subarray Sum, exists
 
 Given integer array, find the subarray, the sum = target.  Does it exist?
-`input: int[] A, int target.`
+
+input: int[] A, int target.
+
 >**Basically it's trading space for time:**
 *Use a HashSet to store precomputed sums[0...j], and any subarray sum can be computed by:*
 `sum[0...i] - sum[0...j] =  sum[j...i] =?  target`
@@ -287,6 +307,7 @@ How many subarrays equals the target?
 3. Compare to Q1, we just use a HashMap instead of HashSet, use its value to store the count of visited sums.
 
 `Time: O(n), Space: O(n)`
+
 ```java
 int res = 0; // count of pairs
 int sum = 0;
@@ -309,9 +330,11 @@ return res;
 ### Follow-up 2: Closest to a 0
 
  Find the subarray sum, that the sum is closest to a 0.
-`input: int[] A, int target`
->- This time Hash won't work cause it can only lookup exact (=) values, can't do >  or < value search.
->- subarray  closest to 0 --->  A[i] - A[j] closest to 0 ---> A[i] and A[j] are closest.
+
+input: int[] A, int target
+
+> - This time Hash won't work cause it can only lookup exact (=) values, can't do >  or < value search.
+> - subarray  closest to 0 --->  A[i] - A[j] closest to 0 ---> A[i] and A[j] are closest.
 > - **Whenever we see closest, <, >, distance etc., we should think about sorting or sorted data structure, because it will make things easier.**
 
 1. Use an array `int sums[]` to store all the precomputed sums[0...i].
@@ -344,6 +367,7 @@ Given an array，check if there are duplicates elements within k indices，retur
 > Within k indices ---> maintain a K size window, use a HashSet to store the values in the window
 
 `Time: O(n), Space: O(k)`
+
 ```java
 public boolean existsDup(int[] A, int k) {
 	Set<Integer> window = new HashSet<>();
@@ -361,16 +385,20 @@ public boolean existsDup(int[] A, int k) {
 
 Check if there are two elements that their |difference| is less than T within K indices.
 
+#### Ideas
+
 - less than T ---> HashSet/Table won't work
 - within K indices ---> sliding window
-- | two difference | ---> classic two pointers way to solve two-diff won't work because it's sliding window and not sorted.
-- | two difference | ---> can be viewed as distance, which means **the distance of two points** within K indices which < T.
+- abs(difference of two numbers) ---> classic two pointers way to solve two-diff won't work because it's sliding window and not sorted.
+- abs(difference of two numbers) ---> can be viewed as distance, which means **the distance of two points** within K indices which < T.
 
 #### Method 1 --- BST Window
 
-> Because we are looking for | difference | **< T**, it's a **range search** for any difference < T basically.
+> Because we are looking for abs(difference) **< T**, it's a **range search** for any difference < T basically.
+
 > **We can do it much easier if it is sorted**, and because it's a sliding window, it's hard to sort it in place.
 > Therefore, we can maintain a sorted window of K elements using BST.
+
 > Every time we insert a new element, we use BST to search the closest number to the new element in the window.
 
 BST has two related functions :
@@ -400,12 +428,15 @@ public boolean exists(int[] A, int k, int t) {
 #### Method 2 --- Hash Bucket Window
 
 What is possible to optimize and what we want to optimize:
+
 Time Complexity:    O(n * logk) → optimize to O(n)
+
 Space Complexity:  O(k)
 
 > Optimize from O(n * logk) ---> O(n), in which case BST can't be used, and possible data structure should be Hash related.
 
 We use T as the bucket size, and hash each value to different bucket.
+
 E.g. T = 3:
 
 | Bucket: (Key)	| 0 		|  1  		| 2 	| ... |
@@ -414,10 +445,10 @@ E.g. T = 3:
 
 In this case, we only need to check the bucket contains the value and the two neighbor buckets.
 
-1. Use a HashMap from Bucket Number to one of the values. There won't be two values at the same bucket, because if so it must have already satisfied this condition; | difference | of two numbers < T, and returned)
+1. Use a HashMap from Bucket Number to one of the values. There won't be two values at the same bucket, because if so it must have already satisfied this condition; abs(difference) < T, and returned)
 2. Maintain such a window, whenever insert a new element, check its bucket and its neighbor buckets, they are the only possible numbers that could have the difference < T.
 
-> We can use this kind of method (**Hash Value to Bucket, same range in the same bucket**) when we see something like this **| two number's difference | < T **
+> We can use this kind of method (**Hash Value to Bucket, same range in the same bucket**) when we see something like this ** abs(two number's difference) < T **
 
 ```java
 public boolean exists(int[] A, int k, int t) {
@@ -473,7 +504,9 @@ Below are not in the default APIs of Java/C++:
 - array
 
 **Key functions**
+
 - **percolateUp**
+
 ```java
 // for a min-heap, assume A[] starts from 0
 int size; // current size of A
@@ -487,7 +520,9 @@ public void percolateUp(int[] A, int i) {
 	}
 }
 ```
+
 - **percolateDown**
+
 ```java
 // for a min-heap, assume A[] starts from 0
 int size; // current size of A
@@ -504,6 +539,7 @@ public void percolateDown(int[] A, int i) {
 	}
 }
 ```
+
 - heapify
 - poll
 - offer
@@ -613,6 +649,7 @@ public void sortKDiff(int[] A, int k) {
 maintain two Heaps,  one minHeap, one maxHeap.
 
 **x% percentile of stream data flow**
+
 It's a more general form of median of stream. (median is 50% percentile.)
 
 ---
@@ -625,15 +662,20 @@ implement a pool of integers (IDs) range from [0, 10000], provides APIs:
 - bool **checkOutID(int)** : check out a specific ID, return false if it is not available.
 
 **Solution:  minHeap<ID> + HashMap<ID, Index> or TreeSet<ID> (Balanced BST)**
+
 Heap + HashMap:
+
 maintain a minHeap, when initialization, put all available IDs into the minHeap.
+
 - checkOutMinID() --> minHeap.poll();  `Time: O(logn)`
 - returnID(int) --> minHeap.offer(int id); `Time: O(logn)`
 
 and a int[] idMap (or HashMap<Integer, Integer>), map from Integer as ID to Integer as Index of the heap element.
+
 - checkOutID(int id) --> minHeap.deleteAtIndex(idMap[id]), delete both in Map and Heap . `Time: O(logn)`
 
 E.g. Code example:
+
 ```java
 if (id in the map) {
 	int index = map.get(id); // O(1)
@@ -654,31 +696,31 @@ Details of the implementation by TreeSet is much easier. (ignored)
 - void delete(int) --> delete one element from it
 
 Heap(Array) + HashMap --> O(logn). much complex when involving delete(), need to implement delete() yourself to achieve O(logn)
+
 TreeMap --> delete() --> O(logn), median --> O(logn).
 
 **Solution: Sliding window of median numbers**
+
 Only need one TreeSet
+
 1. initialize the TreeSet with the first k elements
 2. Find the initial median
 3. Traverse the array, each step, add right element then remove left element; **The tricky part**:
- - *If the element added and the element removed are on the same side of the median, median won't change, remain the same.*
- - *If the element added < median and element removed > median  --> median is the left neighbor node, TreeSet.prev(median).*
- - *If the element added > median and element removed < median --> median is the right neighbor node, TreeSet.next(median).*
+	- *If the element added and the element removed are on the same side of the median, median won't change, remain the same.*
+	- *If the element added < median and element removed > median  --> median is the left neighbor node, TreeSet.prev(median).*
+	- *If the element added > median and element removed < median --> median is the right neighbor node, TreeSet.next(median).*
 
 #### [Huffman Encoding](http://en.wikipedia.org/wiki/Huffman_coding)
 
-
-
 ![Huffman_coding_example.svg.png](../images/Huffman_coding_example.svg.png)
-
 
 The simplest construction algorithm uses a priority queue where the node with lowest probability is given highest priority:
 
 1. Create a leaf node for each symbol and add it to the priority queue.
 2.  While there is more than one node in the queue:
- 1. Remove the two nodes of highest priority (lowest probability) from the queue
- 2. Create a new internal node with these two nodes as children and with probability equal to the sum of the two nodes' probabilities.
- 3. Add the new node to the queue.
+	1. Remove the two nodes of highest priority (lowest probability) from the queue
+	2. Create a new internal node with these two nodes as children and with probability equal to the sum of the two nodes' probabilities.
+	3. Add the new node to the queue.
 3. The remaining node is the root node and the tree is complete.
 
 Since efficient priority queue data structures require O(log n) time per insertion, and a tree with n leaves has 2n−1 nodes, this algorithm operates in `O(n log n) time`, where n is the number of symbols.
@@ -700,18 +742,21 @@ Since efficient priority queue data structures require O(log n) time per inserti
 #### Method 1 - HashSet, add & remove:
 
 Using HashSet, add to the HashSet if the HashSet not contains the value, if the HashSet already contains the value, remove it from the HashSet. The remaining element will be the answer.
+
 `Time: O(n), Space: O(n)`
 
 #### Method 2 - bit manipulation, xor
 
 XOR, since num1 ^ num1 = 0, traverse the array and do XOR.
+
 `Time: O(n), Space O(1)`
 
 #### Method 3 - count 1s of every bit
 
 record number of 1s for each bit,  for each bit count, count = count % 2:
-	if the bit count is odd, then --> 1
-	if the bit count is even, then --> 0
+- if the bit count is odd, then --> 1
+- if the bit count is even, then --> 0
+
 `Time: O(32n), Space: O(32)`
 
 ### Follow-up 1, if the number range from [1, n], given the array of size n - 1
@@ -744,22 +789,33 @@ record number of 1s for each bit,  for each bit count, count = count % 2:
 Like Method 2 ---> how to let every three "1"s to be 0 ?
 
 Two bits to record how many "1"s have seen so far.
+
 00 -->  01 --> 10 --> 11 <=> 0
 
 Use two integer variables to record the first bit and the second bit.
+
 0       0
+
 two one
+
 For Variable One:
+
 one + next value
+
 0 + 0 = 0
+
 0 + 1 = 1
+
 1 + 0 = 1
+
 1 + 1 = 0
+
 ==>  one ^ value = next one
 
 For Variable Two, it depends on One:
 1. one == 1 && val == 1 --> two = 1
 2. two == 1 --> two = 1
+
 ```java
 int one = 0;
 int two = 0;
@@ -790,7 +846,7 @@ Example: {3, 1, 5, 4}, n = 5, return 2
 
 {3, 1, 5, 4} --> {1, 5, 3, 4}
 
-```
+```java
 public int findMissing(int[] A) {
 	for (int i = 0; i < A.length; i++) {
 		if (A[i] != i + 1 && A[i] <= A.length) {
@@ -808,7 +864,7 @@ public int findMissing(int[] A) {
 
 ### Follow-up 1: First missing positive in an arbitrary int array
 
-```
+```java
 public int findMissing(int[] A) {
 	for (int i = 0; i < A.length; i++) {
 		if (A[i] != i + 1 && A[i] <= A.length && A[i] != A[A[i] - 1]) {
@@ -833,13 +889,17 @@ public int findMissing(int[] A) {
 ### Q3.Given a value array with its corresponding position array, swap back the value array.
 
 Example:
+
 value = {1, 2, 3}, pos = {2, 1, 0}  --> {3, 2, 1}
 
-###### Solution: swap
+**Solution: swap**
 
 Traverse the array:
+
 if pos[i] != i, then **swap value[] and pos[] at the same time** and stay put
+
 else continue
+
 ```java
 public void swapBack(int[] values, int[] pos) {
 	assert values.length == pos.length;
@@ -859,6 +919,7 @@ public void swapBack(int[] values, int[] pos) {
 ### Q1.Is valid UTF-8
 
 Determine if an byte array is valid UTF-8 string?
+
 ![utf8-encoding.png](../images/utf8-encoding.png)
 
 	Be careful corner cases:
@@ -901,18 +962,27 @@ private int length(byte b) {
 
 ### Q2.Read k bytes by read 4096 bytes (Frequent)
 
+```java
 // sequentially read on file
 // guarantee the buffer size = 4096
 // return actually how many bytes read
+```
+
 Given read4k, implement read() k bytes into buffer by calling read4k()
-`int read4k(byte[] buffer) {
+
+```
+int read4k(byte[] buffer) {
 	assert buffer.length == 4096;
-}`
+}
+```
 
 The difficult part is the last read
+
 Solution --> Cases analysis:
+
 1. readLen == 4096, k < 4096
 2. readLen < 4096
+
 ```java
 int read(byte[] buffer, int k) {
 	assert buffer.length == k;
@@ -933,6 +1003,7 @@ int read(byte[] buffer, int k) {
 ### Follow-up 1 : Repeatedly called read()
 
 Now the read() can be called repeatedly for the same file
+
 ```java
 // read4k() changes to class FileReader4K {}
 class FileReader4K {
@@ -947,12 +1018,14 @@ class FileReader4K {
 	}
 }
 ```
+
 *Solution:*
+
 Case analysis:
 1. **k <= rest** --> read k bytes, move buff4k to left k bytes, rest -= k
 2. **k > rest** --> read all rest bytes in buff4k, at last read, there are several cases to handle:
- 1. when copy buff4k to buffer, the copy *length = min(readSize, k - len)*
- 2. when the bytes needed (*k - len*) is less than the number of bytes has read in buff4k[] (*readSize*), we also need to move the rest of bytes that are not read in buff4k to the beginning and update rest counter.
+	1. when copy buff4k to buffer, the copy *length = min(readSize, k - len)*
+	2. when the bytes needed (*k - len*) is less than the number of bytes has read in buff4k[] (*readSize*), we also need to move the rest of bytes that are not read in buff4k to the beginning and update rest counter.
  3. the readSize < 4096, has reach the end of the file
 
 ```java
@@ -1006,11 +1079,15 @@ class FileReader {
 ### Q3.Parsing message format
 
 [4][ msg ] [4] [msg] .... [4] [msg]
-byte array for a stream of messages,  the format is every 4 bytes determine the length of the message in byte, followed by the number of length of messages.
 
+byte array for a stream of messages, the format is every 4 bytes determine the length of the message in byte, followed by the number of length of messages.
+
+```java
 void **emit**(byte[] msg);
 // once parsed a message, use emit() to process message
 void **accept**(byte[] stream) {}
+```
+
 
 ```java
 void accept(byte[] data) {
@@ -1054,16 +1131,15 @@ void accept (byte b) {
 }
 ```
 
-
 ## Dynamic Programming
 
 ### What kind of problems to solve?
 
-min/max,
-sum,
-yes/no,
-all results,
-....
+- min/max,
+- sum,
+- yes/no,
+- all results,
+- ....
 
 `The problem can be easily separated into small steps with the same problem description.`
 
@@ -1071,46 +1147,69 @@ all results,
 
 **Another big hint**: if you can not find a reasonably better solution than brute force/recursion.
 
-> 本质 Dynamic Programming is nothing special than the brute force solution, essentially it just does the memorization of the partial solutions so that later we can reuse the partial solutions instead of computing them again. The key is trading time complexity with space complexity for the optimization.
+`本质`
+
+> Dynamic Programming is nothing special than the brute force solution, essentially it just does the memorization of the partial solutions so that later we can reuse the partial solutions instead of computing them again. The key is trading time complexity with space complexity for the optimization.
 
 `Key Points:`
+
 **State**: the partial solution for the same problem with smaller size.
+
 What does the state mean?
-    state[i] / state[i][j] / …...
+
+    state[i] / state[i][j] / .....
+
 How to get the state?
+
 problem patterns, similar typical problems(已经总结好的常见类型)
+
 try out each of the most frequently used ones.
+
 `try to find the brute force solution first, and find which part is duplicated and can be optimized.`
 
-**Function (Induction rule)**: how to use the solution of the problem with smaller size to solve the problem with larger size.
+**Function (Induction rule)**: 
+
+how to use the solution of the problem with smaller size to solve the problem with larger size.
+
 `Hint: the function is usually how the recursion is done.`
+
 Function sometimes is not “identical”, and usually it is determined along with how to define the state, for the same problem we could have multiple possible states and functions definition, and there might be one among all of these which is the most optimal.
 
 **Base case**: what are the initial states to start?
+
 `Hint: in recursion, there should be a termination state.`
 
 **Answer**:
+
 How the answer is related to one/all of the states.
 
 **Order of filling the solution:**
+
 how the Function is defined, what are the cells state[i][j] depends on.
 
 **Optimization:**
+
 Time: usually depends on how your state is chosen.
+
 Space: identify the duplicated spaces needed.
 
 
 ### Q1.Steal money on street problem
 
 There are several rooms and in each of the rooms there is some amount of money (non-negative).
+
 There is an alert system such that if we steal the money from two adjacent rooms, the alert will fire. What is the max amount of money we can safely have?  (You can only steal non-adjacent rooms)
 
 **Solution**
+
 **State:**  M[i] : the max amount of money we have steal from A[0 ...i], no guarantee steal A[i].
+
 **Base case:**  M[0] = A[0]
+
 **Induction rule:**  M[i] = max(M[i - 1], M[i - 2] + A[i])
 
 `Optimal, Time: O(n), Space: O(1)`
+
 ```java
 public int maxProfit(int[] A) {
 	if (A.length < 2)
@@ -1143,8 +1242,10 @@ public int maxProfit(int[] A) {
 ### Q2.Determine last bit of byte stream
 
 Given a byte array, which is an encoding of characters. Here is the rule:
-a. If the first bit of a byte is 0, that byte stands for a one-byte character
-b. If the first bit of a byte is 1, that byte and its following byte together stand for a two-byte character
+
+1. If the first bit of a byte is 0, that byte stands for a one-byte character
+2. If the first bit of a byte is 1, that byte and its following byte together stand for a two-byte character
+
 Now implement a function to decide if the last character is a one-byte character or a two-byte character
 
 **Solution:**
@@ -1152,17 +1253,25 @@ Now implement a function to decide if the last character is a one-byte character
 2. A[n - 1] == 0
 
 **State:** m[i]: if the last byte can be one-byte character, for the subarray(i, A.length - 1)
+
 **Induction rule:**
+
 m[i] = A[i] == 1 → m[i + 2],  A[i] == 0 → m[i +1]
+
 **Result:** m[0]
+
 **Base case:** m[n - 1] = true, m[n - 2] = (A[n - 2] == 0)
 
 `Time : O(n) ,Space: O(n)`
 
 `Optimization:`
+
 0 0 → result = m[i + 1]   *// break ealiear*
+
 1 0
+
 0 1
+
 1 1
 
 ```java
@@ -1186,25 +1295,35 @@ if (A[n - 1] == 0) {
 ### Q3.Longest Increasing Subsequence (Frequent)
 
 **Method - 1**
+
 `Time: O(n^2), Space: O(n)`
+
 **State:** M[i] = max *length* of increasing subsequence of A[0...i], include i
+
 **Base case:** M[0] = 1
+
 **Induction Rule:**  M[i] = max(M[j]) + 1, for all j such that j < i && A[j] < A[i]
 
 **Method - 2**
+
 `Optimal Time O(nlogn)`
+
 M[i]: {1, 2, 4} the smallest end element of all the increasing subsequence having length i.
 
 ### Follow-up1.Find the number of increasing subsequences
 
 `Time: O(n^2), Space: O(n)`
+
 **State:** M[i] = max *number of increasing subsequence* of A[0...i], include i
+
 **Induction Rule:**  M[i] = sum(M[j]), for j < i && A[j] < A[i]
 
 ### Follow-up2.Reconstruct the path
 
 `Time: O(n^2), Space: O(n)`
+
 Still the same M[i] as Q2, need one more pointer array:
+
 `backIndex[i]: the last index of the longest subsequence ended at index i.`
 
 ### Variant1.2D Space, lines
@@ -1218,11 +1337,13 @@ Set of points in 2D space, how to find the largest subset of points such that, e
 2. find the longest increasing subsequence of y coordinate
 
 **Variant1.1 - Squares:** (the exact same solution)
+
 Set of envelopes, each one has (length, width), we can put e1 into e2 iff e2.length > e1.length && e2.width > e1.width. What is the maximum number of envelopes we can put in one stack.
 
 ### Variant2.3D Boxes
 
 Set of boxes, each one has (length, width, height), we want to put them as a stack, when we put none box b2 on another box b1, we need to guarantee that b2.length < b1.length && b2.width < b1.width.
+
 What is the max height we can get?
 
 **Induction rule:** M[i] = height[i] + max(M[j])
@@ -1239,13 +1360,14 @@ We have a permutation of number 1 - n, we can delete one number and insert it to
 
 > Max number of elements not needed to be moved --> Find the longest increasing subsequence
 
-
 ---
 
 ### Q4.Largest subarray sum
 
 `Optimal Time: O(n), Space: O(1)`
+
 **State:** M[i] = largest subarray sum of A[0, i], include A[i].
+
 **Induction rule:** M[i] = max(A[i], M[i-1] + A[i]);
 
 ### Variant1.Largest submatrix sum
@@ -1253,6 +1375,7 @@ We have a permutation of number 1 - n, we can delete one number and insert it to
 > Flat the matrix, convert it to 1D array --> largest subarray sum
 
 `Time: O(m*m*n), Space: O(n)`
+
 ```java
 public int largest(int[][] A) {
 	int res = Integer.MIN_VALUE;
@@ -1328,6 +1451,7 @@ Given an array has only 1 and 0, you can choose a segment[l, r], and flip the se
 ### Variant4.Diff of number of 0s and 1s
 
 Given an array containing only 0 and 1s. Find the subarray, such that, the diff of number of 1, 0s are the largest.
+
 > Still → 0 =>1, 1 => -1
 > max(**largest subarray sum**, abs(**smallest subarray sum**))
 
@@ -1335,6 +1459,7 @@ Given an array containing only 0 and 1s. Find the subarray, such that, the diff 
 ### Variant5.Equals number of 0s and 1s
 
 Given 1, 0 array, longest subarray contains equal number of 0 and 1.
+
 > Still → 0 =>1, 1 => -1
 > Longest subarray sum equals to 0 + **pre-computation sum**
 
@@ -1342,19 +1467,27 @@ Given 1, 0 array, longest subarray contains equal number of 0 and 1.
 ### Q5 Longest Increasing Subarray
 
 **M[i]** : longest increasing subarray end at i, include i
+
 M[0] = 1
+
 M[i] = A[i] > A[i-1] ? M[i-1] + 1 : 1;
 
 ### Follow-up - Longest increasing subpath in binary tree
 
 Path: form root to any leaf
+
 &nbsp;&nbsp;&nbsp;&nbsp;3
+
 &nbsp;&nbsp;1 &nbsp;&nbsp; 6
+
 &nbsp;2 5 &nbsp; 4 1
+
 3
+
 Sub-Path output: 1 2 3
 
 `Time: O(n)`
+
 ```java
 // DP idea, use the result of parent node for children nodes
 // Top-down update globalMax, DFS
@@ -1388,6 +1521,7 @@ private void longest(TreeNode root, int parentVal, int length) {
 > DFS + Memorization
 
 `Time: O(mn)`
+
 ```java
 private void longestPath(int[][] mat)
 	int[][] M = new int[m][n];
@@ -1420,10 +1554,12 @@ private int longestPath(int[][] mat, int i, int j, int [][] M, int prevVal) {
 ### Q6 Shortest list of integers, sum of square to the target number
 
 For example, target = 14
-14 = 1^2 + 2^2 + 3^2,  (1,2,3)
-14 = 1^2 + 1^2 + 2^2 + 2^2 + 2^2 (1,1,2,2,2)
-(1, 2, 3) is the shortest.
 
+14 = 1^2 + 2^2 + 3^2,  (1,2,3)
+
+14 = 1^2 + 1^2 + 2^2 + 2^2 + 2^2 (1,1,2,2,2)
+
+(1, 2, 3) is the shortest.
 
 
 ### Q7 Paint House
@@ -1432,4 +1568,3 @@ Minimize the cost of painting K houses, each house has different costs to paint 
 
 ### Variant - 30 days in K casinos
 
-### Q8

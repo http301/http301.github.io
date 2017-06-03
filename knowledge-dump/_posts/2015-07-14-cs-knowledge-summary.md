@@ -52,28 +52,35 @@ GC decides when to do GC,
 GC works differently on different generations.
 
 **Heap Structure for GC**
+
 In general, there are 2 partitions of Heap space for GC
+
 - Young generation :
 	1. Eden space
 	2. Survivor spaces
 - Old generation
 
 **For young generation**:
+
 Generally it's a mark and move operation, the newly created objects will be stored in Eden space,. When eden is full, living objects will be moved and piled up to survivor space. After couple of times of eden to survivor, living objects in survivor space will be moved to the old generation.
 
 To be more specific:
+
 1. Newly created objects will be stored in eden space.
 2. When the eden space is full, GC will be performed. Survived objects will be moved and piled up into the survivor space
 3. Two survivor spaces are being used as a buffer for each other. At the beginning, we choose one for GC, the other will be empty and waiting for the chosen one to be full. When it's full and garbage collected, the empty one will be used for GC and the chosen one will be cleared and stand by waiting.
 4. After a couple of times of above steps, the objects that survived are moved to the old generation.
 
 **For old generation**
+
 Mark-sweep-compact
+
 1. Mark the reachable objects from GC roots as living objects
 2. Sweep the space and delete all dead objects
 3. Compact the living objects so that the objects are piled up consecutively
 
 **GC Roots**
+
 1. Local variables
 2. Active Java threads
 3. Static variables
@@ -92,6 +99,7 @@ Whenever an object in the old generation references an object in the young gener
 **Definition of Memory Leak**: objects are no longer being used by the application, but Garbage Collector can not remove them because they are being referenced.
 
 **How to create a memory leak in Java** :
+
 1. *Mutable Static Fields and Collections* --> are GC roots, they are never garbage-collected.
 2. *Thread-Local Variables* -->  thread-local variables will not be removed by the garbage collector as long as the thread itself is alive.
 3. *Circular and Complex Bi-Directional References* --> One of them must be reachable from roots.
@@ -140,6 +148,7 @@ When all exclusive locks are monitored and modelled as a directed graph, a deadl
 An easy way to avoid deadlock is to give some total ordering to resources and impose a rule that resources are only ever acquired by threads in order. Conversely, a deadlock can be intentionally created by running threads that acquire resources, but do not acquire them in order.
 
 **For example:**
+
 ```java
 class DeadLockExample {
 	Lock lock1;
@@ -179,6 +188,7 @@ Lock contention occurs, when two or more threads are competing in the acquisitio
 ### Which techniques help to reduce lock contention?
 
 In some cases lock contention can be reduced by applying one of the following techniques:
+
 - The scope of the lock is reduced.
 - The number of times a certain lock is acquired is reduced (lock splitting).
 - Using hardware supported optimistic locking operations instead of synchronization. • Avoid synchronization where possible.
@@ -190,8 +200,8 @@ In some cases lock contention can be reduced by applying one of the following te
 - All fields should be final and private.
 - There should be not setter methods.
 - The class itself should be declared final in order to prevent subclasses to violate the principle of immutability. • If fields are not of a primitive type but a reference to another object:
- - There should not be a getter method that exposes the reference directly to the caller.
- - Don’t change the referenced objects (or at least changing these references is not visible to clients of the object).
+	- There should not be a getter method that exposes the reference directly to the caller.
+	- Don’t change the referenced objects (or at least changing these references is not visible to clients of the object).
 
 
 ## Misc
@@ -207,9 +217,11 @@ Exception and Error classes are both subclasses of the Throwable class. The Exce
 ### Path vs ClassPath
 
 **What is PATH and CLASSPATH in Java?**
+
 **Path** is an environment variable which is used by the operating system to find the executables, like javac, java JDK binaries.
 
 **Classpath**  is the path for java compiler and JVM to search for classes and other resource files.
+
 [More details about Classpath](https://www.evernote.com/shard/s424/nl/68417305/f92b971e-65e6-4510-ab3a-84c0e85e2024/)
 
 Path refers to the system while classpath refers to the Developing Envornment.
@@ -231,7 +243,7 @@ Path refers to the system while classpath refers to the Developing Envornment.
 5. **Optimization**: Performs control and data flow analysis;  remove redundant ops, move loop invariant ops outside loop
 6. **Code generation**: Translate intermediate code to actual machine code.
 
-()Occasionally, some of the middle phases are combined together.)
+(Occasionally, some of the middle phases are combined together.)
 
 ### Interperter
 
@@ -249,9 +261,9 @@ Path refers to the system while classpath refers to the Developing Envornment.
 - It models human interaction with real world scenario.
 - Data and operations are encapsulated in objects
 - Benefits
- - Reusability of code.
- - Easy maintenance and flexibility of code.
- - Increased understanding of code.
+	- Reusability of code.
+	- Easy maintenance and flexibility of code.
+	- Increased understanding of code.
 
 ### 3.Functional Programming (ML, Lisp)
 
@@ -272,7 +284,9 @@ Path refers to the system while classpath refers to the Developing Envornment.
 ### Pattern matching (e.g Haskell, ML)
 
 Pattern matching is a dispatch mechanism: choosing which variant of a function is the correct one to call. It's kind of like function overloading in OOP.
+
 **Advantages**:
+
 1. It's very concise when coding compared to OOP's overloading
 2. The compiler will tell you if you left out a case, pretty safe.
 3. It's very expressive, you can use it to express your intent in such a way (E.g. check null).
@@ -280,14 +294,18 @@ Pattern matching is a dispatch mechanism: choosing which variant of a function i
 ### Lazy evaluation:
 
 Lazy Evaluation is that we do not evaluate a function’s arguments before entering the function body.
+
 **Advantages**:
+
 1. supports conceptually infinite data structures, e.g. game trees;
 2. avoids unnecessary list generation;
 
 ### Higher-order function:   
 
 Allow functions as arguments and results of other functions.
+
 **Applications:**
+
 - Currying
 - Anonymous and nested functions
 - Performant recursion through tail call optimization
@@ -299,6 +317,7 @@ Allow functions as arguments and results of other functions.
 - Code more closely tied to the problem domain.
 
 And through above these,we can also achieve:
+
 - Straightforward unit testing.
 - Easier debugging.
 
@@ -307,6 +326,7 @@ And through above these,we can also achieve:
 ## Static typing vs Dynamic typing
 
 **Static typing**
+
 - Verifying the type safety of a program based on analysis of a program's source code.
 - Static typing advocates believe programs are more reliable when they have been well type-checked.
 - It allows many bugs to be **caught early (at compile time)** in the development cycle.
@@ -314,6 +334,7 @@ And through above these,we can also achieve:
 - E.g. ML,  C, C++, C#, Java, Scala, Go...
 
 **Dynamic typing**
+
 - Verifying the type safety of a program at runtime.
 - Advocates of dynamically typed languages claim they better support rapid prototyping and that type errors are only a small subset of errors in a program.
 -  Simpler languages.
@@ -324,6 +345,7 @@ And through above these,we can also achieve:
 - E.g. Javascript, Ruby, Python, PHP, Objective -C, MATLAB …
 
 **Combining static and dynamic type-checking**
+
 - Many useful features or properties are **difficult or impossible to verify statically**, such as downcasting. Therefore, many languages will have both static and dynamic type-checking; the static type-checker verifies what it can, and dynamic checks verify the rest.
 - The presence of static type-checking in a programming language does not necessarily imply the absence of dynamic type-checking.
 
@@ -337,6 +359,7 @@ And through above these,we can also achieve:
 | Platform independent (JVM) | Not independent |
 | generally run slower | generally run faster |
 
+<br>
 
 ---
 
@@ -345,15 +368,17 @@ And through above these,we can also achieve:
 ## [Polymorphism](http://en.wikipedia.org/wiki/Polymorphism_%28computer_science%29)
 
 It's the ability to present the same interface for different underlying forms.
- - function overloading ---> ad hoc polymorphsim
- - generics ---> parametric polymorphism
- - classes or interfaces could have different behaviors based on its subtype ---> subtyping polymorphism (OOP)
+
+- function overloading ---> ad hoc polymorphsim
+- generics ---> parametric polymorphism
+- classes or interfaces could have different behaviors based on its subtype ---> subtyping polymorphism (OOP)
 
 ## Encapsulation
 
 Encapsulation provides objects with the ability to hide their internal characteristics and behavior.
 
 **Advantages:**
+
 - It increases the **usability** and **maintainability** of code, because the behavior of an object can be independently changed or extended.
 - It improves **modularity** by preventing objects to interact with each other, in an undesired way.
 
@@ -373,6 +398,7 @@ It greatly improved the **re-usability** of code and can be used to add addition
 |   Cohesion is Intra – Module Concept.  |  Coupling is Inter -Module Concept.  |
 
 [Wiki Cohesion](http://en.wikipedia.org/wiki/Cohesion_%28computer_science%29)
+
 [Wiki Coupling](http://en.wikipedia.org/wiki/Coupling_%28computer_programming%29)
 
 
@@ -381,7 +407,9 @@ It greatly improved the **re-usability** of code and can be used to add addition
 ### The Using relationship: Association
 
 **Association** is a relationship where all objects have their own lifecycle and there is no owner.  Every object has there own lifecycle.
+
 *E.g. I have a relationship with an object. Foo uses Bar.*
+
 ```java
 public class Foo {
     void Baz(Bar bar) {
@@ -392,7 +420,9 @@ public class Foo {
 ### The Using relationship with Parent: Aggregation
 
 **Aggregation** is a specialised form of Association where all objects have their own lifecycle, but there is ownership and child objects can not belong to another parent object.  We can think about it as a “has-a” relationship.
+
 *E.g. I have an object which I've borrowed from someone else. When Foo dies, Bar may live on.*
+
 ```java
 public class Foo {
     private Bar bar;
@@ -405,7 +435,9 @@ public class Foo {
 ### The Death relationship: Composition
 
 **Composition** is specialised form of Aggregation and we can call this as a “death” relationship. It is a strong type of Aggregation. Child object does not have its lifecycle and if parent object is deleted, all child objects will also be deleted.
+
 *E.g. I own an object and I am responsible for its lifetime, when Foo dies, so does Bar.*
+
 ```java
 public class Foo {
     private Bar bar = new Bar();
@@ -421,12 +453,14 @@ public class Foo {
 | Child objects all are independent | Child objects belong to a single parent | Child objects belong to a single parent |
 
 [Details](http://www.codeproject.com/Articles/330447/Understanding-Association-Aggregation-and-Composit# Requirement1%28TheISArelationship%29)
+
 [Stackoverflow Related Question](http://stackoverflow.com/questions/885937/difference-between-association-aggregation-and-composition)
 
 
 ## Overloading and Overriding
 
 **Overloading** is two or more methods have the same function name and return type but have different argument list in the same class.
+
 **Overriding** is when a child class redefines the same method of a parent class.. The overridden method must have the same name, argument list, and return type.
 
 
@@ -476,6 +510,7 @@ Builder class is like a container who will not build() until all the wanted fiel
 ### Implementation
 
 The builder pattern uses another object, a builder, that receives each initialization parameter step by step and then returns the resulting constructed object at once.
+
 ```java
 class User{
 	private String name;
@@ -532,7 +567,9 @@ It can be used to extend (decorate) the functionality of a certain object static
 ### Implementation
 
 This is achieved by designing a new decorator class that wraps the original class.
+
 This wrapping could be achieved by the following sequence of steps:
+
 1. Subclass the original "Component" class into a "Decorator" class (see UML diagram);
 2. In the Decorator class, add a Component pointer as a field;
 3. Pass a Component to the Decorator constructor to initialize the Component pointer;
@@ -551,11 +588,12 @@ Why use it?
 
 ## Column-Store vs Row-Store
 
-Vertica is a cluster-based column-store database designed for running batch analytics.
-Vertica uses the relational model with an enforced schema.
-Vertica is an ACID-compliant distributed database with sophisticated and costly mechanisms to maintain all of these operational parameters, therefore it trades availability for consistency. It also suffers from potentially high latency on writes if some nodes are responding slowly.
+- Vertica is a cluster-based column-store database designed for running batch analytics.
+- Vertica uses the relational model with an enforced schema.
+- Vertica is an ACID-compliant distributed database with sophisticated and costly mechanisms to maintain all of these operational parameters, therefore it trades availability for consistency. It also suffers from potentially high latency on writes if some nodes are responding slowly.
 
 **What is Column-Store:**
+
 Column-Store database stores data records as a sequence of columns rather than as a sequence of rows.
 
 **Column-Store VS Row-Store**
@@ -625,7 +663,6 @@ Routing是指在Network Layer(OSI model的第三层)，将数据包(data packet)
 ### TCP Header
 
 ![tcp_header.png](../images/tcp_header.png)
-
 
 ### Reliable Protocol
 
@@ -772,10 +809,15 @@ a set of key-value pairs associated with a given user stored in sever side.
 ## [check sum](http://en.wikipedia.org/wiki/Checksum)
 
 check sum is a hash value hashed from a block of data for the purpose of detecting errors, checking data integrity. It is usually used during data transmission or storage.
+
 Usage:
+
 **IPv4 header checksum** -- error detection, calculated only for the header bytes (with the checksum bytes set to 0), is 16 bits long and is a part of the IP packet header.
+
 [IPv4 header checksum Details](http://en.wikipedia.org/wiki/IPv4_header_checksum)
+
 **MD5** -- a compact digital fingerprint of a file
+
 [MD5 Details](http://en.wikipedia.org/wiki/Md5sum)
 
 ---
@@ -793,8 +835,11 @@ Usage:
 ### What is difference between XML Schema and DTD?
 
 `syntax`
+
 The critical difference between DTDs and XML Schema is that XML Schema utilize an XML-based syntax, whereas DTDs have a unique syntax held over from SGML DTDs.
+
 `goal`
+
 The goal of DTDs was to retain a level of compatibility with SGML for applications that might want to convert SGML DTDs into XML DTDs. However, in keeping with one of the goals of XML, "terseness in XML markup is of minimal importance," there is no real concern with keeping the syntax brief.
 
 [More details](http://stackoverflow.com/questions/1544200/what-is-difference-between-xml-schema-and-dtd)
@@ -809,6 +854,7 @@ The process to test the small, relatively independent parts of an application, i
 ### What is integration test?
 
 Sometimes called integration and testing. It's to combine software modules together, and test it as a group. The goal is to verify functionality, performance, and reliability of the integrated system.
+
 It's a black box test.
 
 ### What is smoke test?
