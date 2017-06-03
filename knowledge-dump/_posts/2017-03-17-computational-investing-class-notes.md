@@ -97,7 +97,7 @@ E.g.
 #### Fundamental analysis
 
 * **Book value**: how much a company is worth if it ceased operating today, sold all its assets and paid off all its debts
- * total assets - (intangible assets (patents, goodwill) + liabilities)
+	- total assets - (intangible assets (patents, goodwill) + liabilities)
 * **Future returns**: "intrinsic" value or future revenue
 
 the fundamental approach is to say let's see what the *book value* is, let's look at the value of *future revenue*. **Put those two together**, and that's what a company's worth.
