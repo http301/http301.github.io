@@ -7,3 +7,4 @@ _site
 .jekyll-metadata
 
 s3_website.yml
+private-markdown
